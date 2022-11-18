@@ -1,0 +1,124 @@
+Base.html
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+    homediv{
+         height: 200px;
+         width: 100%;
+         background-color: powderblue;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-tops">
+    <a class="navbar-brand" href="#">WPD</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+             <div class="collapse navbar-collapse" id="collapsibleNavbar">
+             <ul class="navbar-nav">
+             <li class="nav-item">
+                 <a class="nav-link" href="home">Home</a>
+     		 </li>
+	         <li class="nav-item active">
+                 <a class="nav-link" href="aboutus">About</a>
+    		</li>
+    		<li class="nav-item">
+                 <a class="nav-link" href="contact">Contact</a>
+    		</li>
+        	<li class="nav-item">
+                 <a class="nav-link" href="getstarted">Get Started</a>
+    		</li>
+    	    </ul>
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+ </body>
+</html>
+
+home.html
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="homediv">
+    <br><br><br>
+    <h1 style="text-align:center;background-color:lightblue;font-size:30px">Solution to Detect Phisihing Websites</h1>
+</div>
+{% endblock %}
+
+
+aboutus.html
+
+{% extends "base.html" %}
+{% block title %}About Us{% endblock %}
+{% block content %}
+	<p>"This is our about us page . Please support us "</p>
+{% endblock %}
+
+contact.html
+{% extends "base.html" %}
+{% block title %}Contact Info{% endblock %}
+{% block content %}
+	<p>"This is our CONTACT PAGE ."</p>
+{% endblock %}
+getstarted.html
+{% extends "base.html" %}
+{% block title %}WPD{% endblock %}
+{% block content %}
+<form action="#" method="post">
+    <p> {{usr}} </p>
+	<p>Name:</p>
+	<p><input type="text" name="nm" /></p>
+	<p><input type="submit" value="submit"/></p>
+</form>
+{% endblock %}
+
+
+
+Wpd.py
+
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Nov  3 16:07:10 2022
+
+@author: kcsan
+"""
+
+from flask import Flask, redirect, url_for, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/", methods=['GET', 'POST'])
+def home():
+    return render_template("home.html")
+
+@app.route("/home", methods=['GET', 'POST'])
+def home1():
+    return render_template("home.html")
+
+@app.route("/aboutus", methods=['GET', 'POST'])
+def aboutus():
+    return render_template("aboutus.html")
+
+@app.route("/contact", methods=['GET', 'POST'])
+def contact():
+    return render_template("contact.html")
+
+@app.route("/getstarted", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        user = request.form["nm"]
+        return render_template('getstarted.html', usr='Hello '+user+' !')
+    else:
+        return render_template("getstarted.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+</body>
+</html>
